@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import { initializeFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -13,5 +13,11 @@ const firebaseConfig = {
 // Shared by every visitor (public testimony feed + submissions), so this
 // module deliberately excludes firebase/auth — see lib/firebaseAuth.js,
 // which only loads for people who visit /admin.
-export const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig)
-export const db = getFirestore(app)
+const existingApp = getApps()[0]
+export const app = existingApp || initializeApp(firebaseConfig)
+
+// Some networks (proxies, VPNs, certain ISPs/extensions) mangle Firestore's
+// default WebChannel streaming transport, causing the Listen stream to fail
+// with repeated 400s and admin queries to silently return nothing. Auto
+// long-polling detection falls back to a transport that survives that.
+export const db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true })
