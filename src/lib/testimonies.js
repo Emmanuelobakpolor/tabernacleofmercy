@@ -50,38 +50,66 @@ export function submitTestimony({ name, role, quote }) {
    Public: live feed for the homepage — approved, not yet expired, newest
    first, capped at MAX_LIVE.
    -------------------------------------------------------------------------- */
-export function subscribeLiveTestimonies(callback) {
+export function subscribeLiveTestimonies(callback, onError) {
   const q = query(testimoniesCol, where('status', '==', 'approved'), orderBy('approvedAt', 'desc'))
-  return onSnapshot(q, (snap) => {
-    const rows = snap.docs.map(toRow).filter(isLive).slice(0, MAX_LIVE)
-    callback(rows)
-  })
+  return onSnapshot(
+    q,
+    (snap) => {
+      const rows = snap.docs.map(toRow).filter(isLive).slice(0, MAX_LIVE)
+      callback(rows)
+    },
+    (err) => {
+      console.error('subscribeLiveTestimonies failed:', err)
+      onError?.(err)
+    }
+  )
 }
 
 /* --------------------------------------------------------------------------
    Admin: pending submissions awaiting review, oldest first
    -------------------------------------------------------------------------- */
-export function subscribePendingTestimonies(callback) {
+export function subscribePendingTestimonies(callback, onError) {
   const q = query(testimoniesCol, where('status', '==', 'pending'), orderBy('createdAt', 'asc'))
-  return onSnapshot(q, (snap) => callback(snap.docs.map(toRow)))
+  return onSnapshot(
+    q,
+    (snap) => callback(snap.docs.map(toRow)),
+    (err) => {
+      console.error('subscribePendingTestimonies failed:', err)
+      onError?.(err)
+    }
+  )
 }
 
 /* --------------------------------------------------------------------------
    Admin: everything that has ever been approved (live or since expired),
    newest first — used to show "currently live" vs "expired" history.
    -------------------------------------------------------------------------- */
-export function subscribeApprovedTestimonies(callback) {
+export function subscribeApprovedTestimonies(callback, onError) {
   const q = query(testimoniesCol, where('status', '==', 'approved'), orderBy('approvedAt', 'desc'))
-  return onSnapshot(q, (snap) => callback(snap.docs.map(toRow)))
+  return onSnapshot(
+    q,
+    (snap) => callback(snap.docs.map(toRow)),
+    (err) => {
+      console.error('subscribeApprovedTestimonies failed:', err)
+      onError?.(err)
+    }
+  )
 }
 
 /* --------------------------------------------------------------------------
    Admin: rejected or archived (retired/expired) testimonies, newest first —
    used for the History tab.
    -------------------------------------------------------------------------- */
-export function subscribeTestimoniesByStatus(status, callback) {
+export function subscribeTestimoniesByStatus(status, callback, onError) {
   const q = query(testimoniesCol, where('status', '==', status), orderBy('createdAt', 'desc'))
-  return onSnapshot(q, (snap) => callback(snap.docs.map(toRow)))
+  return onSnapshot(
+    q,
+    (snap) => callback(snap.docs.map(toRow)),
+    (err) => {
+      console.error(`subscribeTestimoniesByStatus(${status}) failed:`, err)
+      onError?.(err)
+    }
+  )
 }
 
 /* --------------------------------------------------------------------------

@@ -28,9 +28,16 @@ function toSermon(docSnap) {
   }
 }
 
-export function subscribeSermons(callback) {
+export function subscribeSermons(callback, onError) {
   const q = query(sermonsCol, orderBy('date', 'desc'))
-  return onSnapshot(q, (snap) => callback(snap.docs.map(toSermon)))
+  return onSnapshot(
+    q,
+    (snap) => callback(snap.docs.map(toSermon)),
+    (err) => {
+      console.error('subscribeSermons failed:', err)
+      onError?.(err)
+    }
+  )
 }
 
 export function createSermon(data) {

@@ -46,9 +46,16 @@ function toEvent(docSnap) {
   }
 }
 
-export function subscribeEvents(callback) {
+export function subscribeEvents(callback, onError) {
   const q = query(eventsCol, orderBy('date', 'asc'))
-  return onSnapshot(q, (snap) => callback(snap.docs.map(toEvent)))
+  return onSnapshot(
+    q,
+    (snap) => callback(snap.docs.map(toEvent)),
+    (err) => {
+      console.error('subscribeEvents failed:', err)
+      onError?.(err)
+    }
+  )
 }
 
 export function createEvent(data) {

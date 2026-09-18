@@ -33,15 +33,29 @@ export function submitContactMessage({ name, phone, email, subject, message }) {
 }
 
 // Admin: active (not yet marked done) messages, oldest first.
-export function subscribeActiveMessages(callback) {
+export function subscribeActiveMessages(callback, onError) {
   const q = query(messagesCol, where('status', '==', 'new'), orderBy('createdAt', 'asc'))
-  return onSnapshot(q, (snap) => callback(snap.docs.map(toMessage)))
+  return onSnapshot(
+    q,
+    (snap) => callback(snap.docs.map(toMessage)),
+    (err) => {
+      console.error('subscribeActiveMessages failed:', err)
+      onError?.(err)
+    }
+  )
 }
 
 // Admin: messages already handled, newest first.
-export function subscribeDoneMessages(callback) {
+export function subscribeDoneMessages(callback, onError) {
   const q = query(messagesCol, where('status', '==', 'done'), orderBy('createdAt', 'desc'))
-  return onSnapshot(q, (snap) => callback(snap.docs.map(toMessage)))
+  return onSnapshot(
+    q,
+    (snap) => callback(snap.docs.map(toMessage)),
+    (err) => {
+      console.error('subscribeDoneMessages failed:', err)
+      onError?.(err)
+    }
+  )
 }
 
 export function markMessageDone(id) {

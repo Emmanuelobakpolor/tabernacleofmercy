@@ -307,9 +307,10 @@ function PrayerRequestsSection() {
   const [active, setActive] = useState([])
   const [done, setDone] = useState([])
   const [busyId, setBusyId] = useState(null)
+  const [error, setError] = useState(null)
 
-  useEffect(() => subscribeActiveRequests(setActive), [])
-  useEffect(() => subscribeDoneRequests(setDone), [])
+  useEffect(() => subscribeActiveRequests(setActive, setError), [])
+  useEffect(() => subscribeDoneRequests(setDone, setError), [])
 
   const withBusy = async (id, fn) => {
     setBusyId(id)
@@ -324,6 +325,7 @@ function PrayerRequestsSection() {
 
   return (
     <>
+      <ErrorBanner error={error} />
       <div className="flex flex-wrap gap-3">
         {PRAYER_TABS.map((t) => {
           const count = t.id === 'active' ? active.length : done.length
@@ -461,9 +463,10 @@ function MessagesSection() {
   const [active, setActive] = useState([])
   const [done, setDone] = useState([])
   const [busyId, setBusyId] = useState(null)
+  const [error, setError] = useState(null)
 
-  useEffect(() => subscribeActiveMessages(setActive), [])
-  useEffect(() => subscribeDoneMessages(setDone), [])
+  useEffect(() => subscribeActiveMessages(setActive, setError), [])
+  useEffect(() => subscribeDoneMessages(setDone, setError), [])
 
   const withBusy = async (id, fn) => {
     setBusyId(id)
@@ -478,6 +481,7 @@ function MessagesSection() {
 
   return (
     <>
+      <ErrorBanner error={error} />
       <div className="flex flex-wrap gap-3">
         {MESSAGE_TABS.map((t) => {
           const count = t.id === 'active' ? active.length : done.length
@@ -609,15 +613,20 @@ function TestimoniesSection() {
   const [approved, setApproved] = useState([])
   const [history, setHistory] = useState([])
   const [busyId, setBusyId] = useState(null)
+  const [error, setError] = useState(null)
 
-  useEffect(() => subscribePendingTestimonies(setPending), [])
-  useEffect(() => subscribeApprovedTestimonies(setApproved), [])
+  useEffect(() => subscribePendingTestimonies(setPending, setError), [])
+  useEffect(() => subscribeApprovedTestimonies(setApproved, setError), [])
   useEffect(() => {
-    const unsubRejected = subscribeTestimoniesByStatus('rejected', (rows) =>
-      setHistory((prev) => mergeHistory(prev, 'rejected', rows))
+    const unsubRejected = subscribeTestimoniesByStatus(
+      'rejected',
+      (rows) => setHistory((prev) => mergeHistory(prev, 'rejected', rows)),
+      setError
     )
-    const unsubArchived = subscribeTestimoniesByStatus('archived', (rows) =>
-      setHistory((prev) => mergeHistory(prev, 'archived', rows))
+    const unsubArchived = subscribeTestimoniesByStatus(
+      'archived',
+      (rows) => setHistory((prev) => mergeHistory(prev, 'archived', rows)),
+      setError
     )
     return () => {
       unsubRejected()
@@ -638,6 +647,7 @@ function TestimoniesSection() {
 
   return (
     <>
+      <ErrorBanner error={error} />
       <div className="flex flex-wrap gap-3">
         {TESTIMONY_TABS.map((t) => {
           const count = t.id === 'pending' ? pending.length : t.id === 'live' ? live.length : history.length
@@ -698,6 +708,30 @@ function EmptyState({ text }) {
   return (
     <div className="border border-dashed border-line bg-white p-12 text-center">
       <p className="text-[14.5px] text-muted">{text}</p>
+    </div>
+  )
+}
+
+// Firestore fails these list queries silently by default (no error ever
+// reaches the UI) — most often because a required composite index hasn't
+// been created yet, or the security rules reject the read. This makes that
+// failure visible instead of just showing an empty, misleadingly "all
+// clear" list.
+function ErrorBanner({ error }) {
+  if (!error) return null
+  const isIndexError = error.code === 'failed-precondition'
+  return (
+    <div className="mb-6 border-l-4 border-red-500 bg-red-50 p-4 text-[14px] text-red-700">
+      <p className="font-semibold">This list couldn&rsquo;t load — it may not be empty.</p>
+      {isIndexError ? (
+        <p className="mt-1">
+          Firestore needs an index for this query. Open the browser console (F12) for a
+          direct link to create it, or check Firebase Console → Firestore Database →
+          Indexes.
+        </p>
+      ) : (
+        <p className="mt-1">{error.message}</p>
+      )}
     </div>
   )
 }
@@ -813,8 +847,9 @@ function EventsSection() {
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState(null)
   const [busyId, setBusyId] = useState(null)
+  const [error, setError] = useState(null)
 
-  useEffect(() => subscribeEvents(setEvents), [])
+  useEffect(() => subscribeEvents(setEvents, setError), [])
 
   const openCreate = () => {
     setEditing(null)
@@ -838,6 +873,7 @@ function EventsSection() {
 
   return (
     <>
+      <ErrorBanner error={error} />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[14.5px] text-muted">
           {events.length} event{events.length === 1 ? '' : 's'} showing on the site.
@@ -1066,8 +1102,9 @@ function SermonsSection() {
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState(null)
   const [busyId, setBusyId] = useState(null)
+  const [error, setError] = useState(null)
 
-  useEffect(() => subscribeSermons(setSermons), [])
+  useEffect(() => subscribeSermons(setSermons, setError), [])
 
   const openCreate = () => {
     setEditing(null)
@@ -1091,6 +1128,7 @@ function SermonsSection() {
 
   return (
     <>
+      <ErrorBanner error={error} />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[14.5px] text-muted">
           {sermons.length} sermon{sermons.length === 1 ? '' : 's'} showing on the site.

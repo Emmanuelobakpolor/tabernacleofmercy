@@ -44,15 +44,29 @@ export function submitPrayerRequest({
 
 // Admin: active (not yet marked done) requests, oldest first so the queue
 // works first-in-first-out.
-export function subscribeActiveRequests(callback) {
+export function subscribeActiveRequests(callback, onError) {
   const q = query(requestsCol, where('status', '==', 'new'), orderBy('createdAt', 'asc'))
-  return onSnapshot(q, (snap) => callback(snap.docs.map(toRequest)))
+  return onSnapshot(
+    q,
+    (snap) => callback(snap.docs.map(toRequest)),
+    (err) => {
+      console.error('subscribeActiveRequests failed:', err)
+      onError?.(err)
+    }
+  )
 }
 
 // Admin: requests already handled, newest first.
-export function subscribeDoneRequests(callback) {
+export function subscribeDoneRequests(callback, onError) {
   const q = query(requestsCol, where('status', '==', 'done'), orderBy('createdAt', 'desc'))
-  return onSnapshot(q, (snap) => callback(snap.docs.map(toRequest)))
+  return onSnapshot(
+    q,
+    (snap) => callback(snap.docs.map(toRequest)),
+    (err) => {
+      console.error('subscribeDoneRequests failed:', err)
+      onError?.(err)
+    }
+  )
 }
 
 export function markRequestDone(id) {
