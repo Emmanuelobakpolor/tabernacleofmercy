@@ -7,7 +7,7 @@ import {
 import { AnimatePresence, motion } from 'framer-motion'
 import Icon from '../components/Icons'
 import { auth } from '../lib/firebaseAuth'
-import { backdropVariants, popVariants } from '../lib/motion'
+import { backdropVariants, drawerVariantsLeft, popVariants } from '../lib/motion'
 import {
   LIFESPAN_DAYS,
   approveTestimony,
@@ -140,13 +140,29 @@ const SECTIONS = [
 
 function Dashboard({ user }) {
   const [section, setSection] = useState('prayer')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const current = SECTIONS.find((s) => s.id === section)
+
+  const goTo = (id) => {
+    setSection(id)
+    setSidebarOpen(false)
+  }
 
   return (
     <div className="min-h-screen bg-shell">
       <header className="border-b border-line bg-white">
         <div className="container flex h-16 items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
-            <span className="grid h-9 w-9 shrink-0 place-items-center bg-brand text-white">
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open menu"
+              className="grid h-9 w-9 shrink-0 place-items-center border border-line text-ink transition-colors hover:border-brand hover:text-brand sm:hidden"
+            >
+              <Icon name="menu" className="h-5 w-5" />
+            </button>
+            <span className="hidden h-9 w-9 shrink-0 place-items-center bg-brand text-white sm:grid">
               <Icon name="lock" className="h-4 w-4" />
             </span>
             <div className="min-w-0">
@@ -162,14 +178,15 @@ function Dashboard({ user }) {
         </div>
       </header>
 
-      <div className="border-b border-line bg-white">
+      {/* Desktop / tablet section nav */}
+      <div className="hidden border-b border-line bg-white sm:block">
         <div className="container flex gap-1 overflow-x-auto">
           {SECTIONS.map((s) => (
             <button
               key={s.id}
               type="button"
               onClick={() => setSection(s.id)}
-              className={`flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-4 py-4 font-heading text-[13.5px] font-semibold transition-colors sm:px-5 sm:text-[14.5px] ${
+              className={`flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-5 py-4 font-heading text-[14.5px] font-semibold transition-colors ${
                 section === s.id
                   ? 'border-brand text-brand'
                   : 'border-transparent text-muted hover:text-ink'
@@ -182,6 +199,17 @@ function Dashboard({ user }) {
         </div>
       </div>
 
+      {/* Mobile: current section indicator (nav itself lives in the sidebar) */}
+      <button
+        type="button"
+        onClick={() => setSidebarOpen(true)}
+        className="flex w-full items-center gap-2 border-b border-line bg-white px-4 py-3.5 font-heading text-[14px] font-semibold text-brand sm:hidden"
+      >
+        <Icon name={current.icon} className="h-4 w-4 shrink-0" />
+        {current.label}
+        <Icon name="arrowRight" className="ml-auto h-4 w-4 text-muted" />
+      </button>
+
       <div className="container py-10">
         {section === 'prayer' && <PrayerRequestsSection />}
         {section === 'messages' && <MessagesSection />}
@@ -189,6 +217,70 @@ function Dashboard({ user }) {
         {section === 'events' && <EventsSection />}
         {section === 'sermons' && <SermonsSection />}
       </div>
+
+      {/* Mobile sidebar */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <div className="fixed inset-0 z-[70] sm:hidden">
+            <motion.div
+              variants={backdropVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="absolute inset-0 bg-ink/50"
+              onClick={() => setSidebarOpen(false)}
+              aria-hidden="true"
+            />
+            <motion.div
+              variants={drawerVariantsLeft}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="absolute left-0 top-0 flex h-full w-[82%] max-w-xs flex-col bg-white shadow-2xl"
+            >
+              <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-5">
+                <span className="font-heading text-[16px] font-bold text-ink">Menu</span>
+                <button
+                  type="button"
+                  onClick={() => setSidebarOpen(false)}
+                  aria-label="Close menu"
+                  className="grid h-9 w-9 place-items-center border border-line text-ink"
+                >
+                  <Icon name="close" className="h-4 w-4" />
+                </button>
+              </div>
+
+              <nav className="flex-1 overflow-y-auto p-2">
+                {SECTIONS.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => goTo(s.id)}
+                    className={`flex w-full items-center gap-3 px-4 py-3.5 text-left font-heading text-[15px] font-semibold transition-colors ${
+                      section === s.id
+                        ? 'bg-brand-tint text-brand'
+                        : 'text-ink hover:bg-shell'
+                    }`}
+                  >
+                    <Icon name={s.icon} className="h-[18px] w-[18px] shrink-0" />
+                    {s.label}
+                  </button>
+                ))}
+              </nav>
+
+              <div className="shrink-0 border-t border-line p-4">
+                <button
+                  type="button"
+                  onClick={() => signOut(auth)}
+                  className="btn-ghost btn-sm w-full"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
