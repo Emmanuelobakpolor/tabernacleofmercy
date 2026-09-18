@@ -64,17 +64,17 @@ export default function Header() {
 
       {/* ---------- 2. Main navigation ---------- */}
       <div className="border-b border-line bg-white shadow-[0_1px_3px_rgba(16,24,40,.05)]">
-        <div className="container flex h-[78px] items-center justify-between gap-6 lg:h-[92px]">
+        <div className="container flex min-h-[78px] items-center justify-between gap-3 py-2.5 sm:gap-6 lg:h-[92px] lg:py-0">
           {/* Brand lockup */}
-          <Link to="/" className="flex shrink-0 items-center gap-3">
-            <span className="grid h-12 w-12 shrink-0 place-items-center bg-brand text-white lg:h-[54px] lg:w-[54px]">
-              <Icon name="cross" className="h-7 w-7" strokeWidth={2} />
+          <Link to="/" className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+            <span className="grid h-10 w-10 shrink-0 place-items-center bg-brand text-white sm:h-12 sm:w-12 lg:h-[54px] lg:w-[54px]">
+              <Icon name="cross" className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={2} />
             </span>
-            <span className="leading-tight">
-              <span className="block font-heading text-[19px] font-bold tracking-tight text-ink lg:text-[22px]">
+            <span className="min-w-0 leading-tight">
+              <span className="block font-heading text-[15px] font-bold leading-snug tracking-tight text-ink sm:text-[19px] sm:leading-tight lg:text-[22px]">
                 Tarbernacle Of Mercy Parish
               </span>
-              <span className="block font-heading text-[10.5px] font-medium uppercase tracking-[0.17em] text-brand lg:text-[11px]">
+              <span className="mt-0.5 hidden font-heading text-[10.5px] font-medium uppercase tracking-[0.17em] text-brand sm:block lg:text-[11px]">
                 Redeemed Christian Church of God
               </span>
             </span>

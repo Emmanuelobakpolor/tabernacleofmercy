@@ -82,7 +82,7 @@ function Login() {
         </span>
         <h1 className="mt-5 font-heading text-[24px] font-bold text-ink">Parish Admin</h1>
         <p className="mt-1.5 text-[14px] text-muted">
-          Sign in to manage testimonies and events.
+          Sign in to manage prayer requests, messages, testimonies, events and sermons.
         </p>
 
         <form onSubmit={onSubmit} className="mt-7 space-y-4">
@@ -144,38 +144,38 @@ function Dashboard({ user }) {
   return (
     <div className="min-h-screen bg-shell">
       <header className="border-b border-line bg-white">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center bg-brand text-white">
+        <div className="container flex h-16 items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <span className="grid h-9 w-9 shrink-0 place-items-center bg-brand text-white">
               <Icon name="lock" className="h-4 w-4" />
             </span>
-            <div>
+            <div className="min-w-0">
               <p className="font-heading text-[15px] font-bold leading-tight text-ink">
                 Parish Admin
               </p>
-              <p className="text-[12px] leading-tight text-muted">{user.email}</p>
+              <p className="truncate text-[12px] leading-tight text-muted">{user.email}</p>
             </div>
           </div>
-          <button type="button" onClick={() => signOut(auth)} className="btn-ghost btn-sm">
+          <button type="button" onClick={() => signOut(auth)} className="btn-ghost btn-sm shrink-0">
             Sign Out
           </button>
         </div>
       </header>
 
       <div className="border-b border-line bg-white">
-        <div className="container flex gap-1">
+        <div className="container flex gap-1 overflow-x-auto">
           {SECTIONS.map((s) => (
             <button
               key={s.id}
               type="button"
               onClick={() => setSection(s.id)}
-              className={`flex items-center gap-2 border-b-2 px-5 py-4 font-heading text-[14.5px] font-semibold transition-colors ${
+              className={`flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-4 py-4 font-heading text-[13.5px] font-semibold transition-colors sm:px-5 sm:text-[14.5px] ${
                 section === s.id
                   ? 'border-brand text-brand'
                   : 'border-transparent text-muted hover:text-ink'
               }`}
             >
-              <Icon name={s.icon} className="h-4 w-4" />
+              <Icon name={s.icon} className="h-4 w-4 shrink-0" />
               {s.label}
             </button>
           ))}
