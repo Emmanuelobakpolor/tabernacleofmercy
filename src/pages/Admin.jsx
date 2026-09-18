@@ -299,7 +299,7 @@ function PrayerRequestsSection() {
                   </div>
                 </div>
 
-                <div className="flex shrink-0 flex-wrap gap-2.5">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:flex-wrap sm:gap-2.5">
                   {row.phone && (
                     <>
                       <a href={`tel:${row.phone}`} className="btn-ghost btn-sm">
@@ -439,7 +439,7 @@ function MessagesSection() {
                   </div>
                 </div>
 
-                <div className="flex shrink-0 flex-wrap gap-2.5">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:flex-wrap sm:gap-2.5">
                   {row.phone && (
                     <>
                       <a href={`tel:${row.phone}`} className="btn-ghost btn-sm">
@@ -620,7 +620,7 @@ function TestimonyRow({ row, children }) {
         </div>
         <p className="mt-2.5 text-[14.5px] leading-relaxed text-muted">&ldquo;{row.quote}&rdquo;</p>
       </div>
-      <div className="flex shrink-0 gap-2.5">{children}</div>
+      <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:gap-2.5">{children}</div>
     </article>
   )
 }
@@ -746,11 +746,11 @@ function EventsSection() {
 
   return (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[14.5px] text-muted">
           {events.length} event{events.length === 1 ? '' : 's'} showing on the site.
         </p>
-        <button type="button" onClick={openCreate} className="btn-primary btn-sm">
+        <button type="button" onClick={openCreate} className="btn-primary btn-sm w-full sm:w-auto">
           <Icon name="calendar" className="h-4 w-4" />
           Add Event
         </button>
@@ -766,7 +766,7 @@ function EventsSection() {
                 key={event.id}
                 className="flex flex-col gap-4 border border-line bg-white p-6 sm:flex-row sm:items-start sm:justify-between"
               >
-                <div className="flex gap-4">
+                <div className="flex min-w-0 gap-4">
                   <div className="grid h-14 w-14 shrink-0 place-items-center bg-brand-light text-center font-heading leading-none text-brand-deep">
                     <span>
                       <span className="block text-[17px] font-bold">{event.day}</span>
@@ -775,7 +775,7 @@ function EventsSection() {
                       </span>
                     </span>
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <p className="font-heading text-[15.5px] font-semibold text-ink">{event.title}</p>
                     <p className="mt-1 text-[13.5px] text-muted">{event.dateLabel}</p>
                     <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-muted">
@@ -785,7 +785,7 @@ function EventsSection() {
                     </div>
                   </div>
                 </div>
-                <div className="flex shrink-0 gap-2.5">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:gap-2.5">
                   <button type="button" onClick={() => openEdit(event)} className="btn-ghost btn-sm">
                     Edit
                   </button>
@@ -999,11 +999,11 @@ function SermonsSection() {
 
   return (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[14.5px] text-muted">
           {sermons.length} sermon{sermons.length === 1 ? '' : 's'} showing on the site.
         </p>
-        <button type="button" onClick={openCreate} className="btn-primary btn-sm">
+        <button type="button" onClick={openCreate} className="btn-primary btn-sm w-full sm:w-auto">
           <Icon name="play" className="h-4 w-4" />
           Add Sermon
         </button>
@@ -1038,7 +1038,7 @@ function SermonsSection() {
                     <span>{sermon.scripture}</span>
                   </div>
                 </div>
-                <div className="flex shrink-0 gap-2.5">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:gap-2.5">
                   <button type="button" onClick={() => openEdit(sermon)} className="btn-ghost btn-sm">
                     Edit
                   </button>
