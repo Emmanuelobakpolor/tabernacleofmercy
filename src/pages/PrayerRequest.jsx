@@ -232,7 +232,7 @@ function RequestSection() {
               <span className="mt-3 block h-[3px] w-10 bg-brand" />
               <ul className="mt-5 space-y-4 text-[14.5px]">
                 {[
-                  ['Faith Clinic', 'Thursdays, 5:30 PM'],
+                  ['Faith Clinic', 'Thursdays, 6:30 PM'],
                   ['Monthly Vigil', 'Last Friday, 10:00 PM'],
                   ['Morning Prayer Chain', 'Daily, 5:30 AM'],
                 ].map(([name, when]) => (

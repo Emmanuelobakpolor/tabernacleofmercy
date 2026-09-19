@@ -31,7 +31,7 @@ export const services = [
   {
     day: 'Sunday',
     name: 'Sunday Service',
-    time: '9:00 AM - 11:00 AM',
+    time: '8:00 AM - 11:30 AM',
     detail:
       'Our main celebration service - praise, worship, the preaching of the Word and communion on the first Sunday of every month.',
     note: 'Sunday School begins at 7:30 AM',
@@ -40,7 +40,7 @@ export const services = [
   {
     day: 'Tuesday',
     name: 'Digging Deep',
-    time: '5:30 PM - 7:00 PM',
+    time: '6:30 PM - 8:00 PM',
     detail:
       'A mid-week Bible study for believers who want to go deeper into Scripture, verse by verse, with room for questions.',
     note: 'Bring your Bible and notebook',
@@ -49,7 +49,7 @@ export const services = [
   {
     day: 'Thursday',
     name: 'Faith Clinic',
-    time: '5:30 PM - 7:00 PM',
+    time: '6:30 PM - 7:30 PM',
     detail:
       'An evening of prayer, intercession and ministration where burdens are lifted and faith is built for the days ahead.',
     note: 'Prayer requests received from 5:00 PM',
@@ -77,7 +77,7 @@ export const ministries = [
       'Raising a generation of young people who are grounded in the Word and bold about their faith.',
     description:
       'Youth Church is where our teenagers and young adults belong. Through teaching, mentorship, career guidance and wholesome fellowship, we help young people build a faith that stands on campus, at work and at home.',
-    meets: '3rd Sundays, 9:00 AM - 11:00 AM',
+    meets: '3rd Sundays, 8:00 AM - 11:30 AM',
     leader: 'Bro. Ayodele Micheal',
     image:
       'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80',
