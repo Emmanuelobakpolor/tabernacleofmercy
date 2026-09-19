@@ -9,6 +9,7 @@ import {
   inputClass,
 } from '../components/Common'
 import { subscribeEvents } from '../lib/events'
+import { submitProgrammeRegistration } from '../lib/programmeRegistrations'
 
 export default function Events() {
   const [live, setLive] = useState(null)
@@ -310,6 +311,33 @@ function CalendarView({ events }) {
 /* ---------------- Registration form ---------------- */
 function Registration({ events }) {
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    const data = new FormData(e.target)
+    const eventSlug = data.get('event')
+    const event = events.find((ev) => ev.slug === eventSlug)
+    setSending(true)
+    setError('')
+    try {
+      await submitProgrammeRegistration({
+        name: data.get('name'),
+        phone: data.get('phone'),
+        email: data.get('email'),
+        count: Number(data.get('count')) || 1,
+        eventSlug,
+        eventTitle: event?.title || '',
+        notes: data.get('notes') || '',
+      })
+      setSent(true)
+    } catch {
+      setError('Something went wrong sending your registration. Please try again.')
+    } finally {
+      setSending(false)
+    }
+  }
 
   return (
     <section id="register" className="scroll-mt-24 py-20 lg:py-28">
@@ -336,20 +364,21 @@ function Registration({ events }) {
                   further details before the programme.
                 </SuccessNotice>
               ) : (
-                <form
-                  className="grid gap-6 sm:grid-cols-2"
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    setSent(true)
-                  }}
-                >
+                <form className="grid gap-6 sm:grid-cols-2" onSubmit={onSubmit}>
                   <Field label="Full Name" id="reg-name" required>
-                    <input id="reg-name" required className={inputClass} placeholder="Your full name" />
+                    <input
+                      id="reg-name"
+                      name="name"
+                      required
+                      className={inputClass}
+                      placeholder="Your full name"
+                    />
                   </Field>
 
                   <Field label="Phone Number" id="reg-phone" required>
                     <input
                       id="reg-phone"
+                      name="phone"
                       type="tel"
                       required
                       className={inputClass}
@@ -360,6 +389,7 @@ function Registration({ events }) {
                   <Field label="Email Address" id="reg-email" required>
                     <input
                       id="reg-email"
+                      name="email"
                       type="email"
                       required
                       className={inputClass}
@@ -370,6 +400,7 @@ function Registration({ events }) {
                   <Field label="Number Attending" id="reg-count">
                     <input
                       id="reg-count"
+                      name="count"
                       type="number"
                       min="1"
                       defaultValue="1"
@@ -379,7 +410,7 @@ function Registration({ events }) {
 
                   <div className="sm:col-span-2">
                     <Field label="Which Programme?" id="reg-event" required>
-                      <select id="reg-event" required className={inputClass} defaultValue="">
+                      <select id="reg-event" name="event" required className={inputClass} defaultValue="">
                         <option value="" disabled>
                           Select a programme
                         </option>
@@ -400,6 +431,7 @@ function Registration({ events }) {
                     >
                       <textarea
                         id="reg-notes"
+                        name="notes"
                         rows="4"
                         className={inputClass}
                         placeholder="Optional"
@@ -407,9 +439,15 @@ function Registration({ events }) {
                     </Field>
                   </div>
 
+                  {error && <p className="text-[14px] text-red-600 sm:col-span-2">{error}</p>}
+
                   <div className="sm:col-span-2">
-                    <button type="submit" className="btn-primary w-full sm:w-auto">
-                      Submit Registration
+                    <button
+                      type="submit"
+                      disabled={sending}
+                      className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                    >
+                      {sending ? 'Submitting…' : 'Submit Registration'}
                     </button>
                   </div>
                 </form>

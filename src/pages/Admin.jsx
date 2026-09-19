@@ -35,6 +35,13 @@ import {
   subscribeActiveMessages,
   subscribeDoneMessages,
 } from '../lib/contactMessages'
+import {
+  deleteProgrammeRegistration,
+  markRegistrationDone,
+  reopenRegistration,
+  subscribeActiveRegistrations,
+  subscribeDoneRegistrations,
+} from '../lib/programmeRegistrations'
 
 export default function Admin() {
   const [user, setUser] = useState(undefined) // undefined = still checking
@@ -133,6 +140,7 @@ function Login() {
 const SECTIONS = [
   { id: 'prayer', label: 'Prayer Requests', icon: 'prayer' },
   { id: 'messages', label: 'Messages', icon: 'mail' },
+  { id: 'registrations', label: 'Registrations', icon: 'calendar' },
   { id: 'testimonies', label: 'Testimonies', icon: 'quote' },
   { id: 'events', label: 'Events', icon: 'calendar' },
   { id: 'sermons', label: 'Sermons', icon: 'play' },
@@ -213,6 +221,7 @@ function Dashboard({ user }) {
       <div className="container py-10">
         {section === 'prayer' && <PrayerRequestsSection />}
         {section === 'messages' && <MessagesSection />}
+        {section === 'registrations' && <RegistrationsSection />}
         {section === 'testimonies' && <TestimoniesSection />}
         {section === 'events' && <EventsSection />}
         {section === 'sermons' && <SermonsSection />}
@@ -583,6 +592,161 @@ function MessagesSection() {
                     type="button"
                     disabled={busyId === row.id}
                     onClick={() => withBusy(row.id, deleteContactMessage)}
+                    className="btn-ghost btn-sm disabled:opacity-60"
+                  >
+                    <Icon name="trash" className="h-4 w-4" />
+                    Delete
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
+
+/* --------------------------------------------------------------------------
+   Registrations section (Programme / event registrations)
+   -------------------------------------------------------------------------- */
+const REGISTRATION_TABS = [
+  { id: 'active', label: 'Active' },
+  { id: 'done', label: 'Done' },
+]
+
+function RegistrationsSection() {
+  const [tab, setTab] = useState('active')
+  const [active, setActive] = useState([])
+  const [done, setDone] = useState([])
+  const [busyId, setBusyId] = useState(null)
+  const [error, setError] = useState(null)
+
+  useEffect(() => subscribeActiveRegistrations(setActive, setError), [])
+  useEffect(() => subscribeDoneRegistrations(setDone, setError), [])
+
+  const withBusy = async (id, fn) => {
+    setBusyId(id)
+    try {
+      await fn(id)
+    } finally {
+      setBusyId(null)
+    }
+  }
+
+  const rows = tab === 'active' ? active : done
+
+  return (
+    <>
+      <ErrorBanner error={error} />
+      <div className="flex flex-wrap gap-3">
+        {REGISTRATION_TABS.map((t) => {
+          const count = t.id === 'active' ? active.length : done.length
+          return (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setTab(t.id)}
+              className={`flex items-center gap-2 border-2 px-5 py-2.5 font-heading text-[14px] font-semibold transition-colors ${
+                tab === t.id
+                  ? 'border-brand bg-brand text-white'
+                  : 'border-line bg-white text-ink hover:border-brand hover:text-brand'
+              }`}
+            >
+              {t.label}
+              <span
+                className={`grid h-5 min-w-5 place-items-center rounded-full px-1 text-[11px] ${
+                  tab === t.id ? 'bg-white/25 text-white' : 'bg-brand-light text-brand-deep'
+                }`}
+              >
+                {count}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
+      <div className="mt-8">
+        {!rows.length ? (
+          <EmptyState
+            text={tab === 'active' ? 'No registrations waiting right now.' : 'Nothing marked done yet.'}
+          />
+        ) : (
+          <div className="space-y-4">
+            {rows.map((row) => (
+              <article
+                key={row.id}
+                className="flex flex-col gap-4 border border-line bg-white p-6 sm:flex-row sm:items-start sm:justify-between"
+              >
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                    <p className="font-heading text-[15.5px] font-semibold text-ink">{row.name}</p>
+                    {row.eventTitle && (
+                      <span className="bg-brand-light px-2.5 py-0.5 font-heading text-[11.5px] font-semibold uppercase tracking-wider text-brand-deep">
+                        {row.eventTitle}
+                      </span>
+                    )}
+                    <span className="text-[13px] text-muted">
+                      {row.count} attending
+                    </span>
+                  </div>
+                  {row.notes && (
+                    <p className="mt-2.5 text-[14.5px] leading-relaxed text-muted">{row.notes}</p>
+                  )}
+                  <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[13px] text-muted">
+                    {row.phone && <span>{row.phone}</span>}
+                    {row.email && <span>{row.email}</span>}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:flex-wrap sm:gap-2.5">
+                  {row.phone && (
+                    <>
+                      <a href={`tel:${row.phone}`} className="btn-ghost btn-sm">
+                        <Icon name="phone" className="h-4 w-4" />
+                        Call
+                      </a>
+                      <a
+                        href={`https://wa.me/${toWhatsAppDigits(row.phone)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-ghost btn-sm"
+                      >
+                        <Icon name="whatsapp" className="h-4 w-4" strokeWidth={1.4} />
+                        WhatsApp
+                      </a>
+                    </>
+                  )}
+                  {row.email && (
+                    <a href={`mailto:${row.email}`} className="btn-ghost btn-sm">
+                      <Icon name="mail" className="h-4 w-4" />
+                      Email
+                    </a>
+                  )}
+                  {tab === 'active' ? (
+                    <button
+                      type="button"
+                      disabled={busyId === row.id}
+                      onClick={() => withBusy(row.id, markRegistrationDone)}
+                      className="btn-primary btn-sm disabled:opacity-60"
+                    >
+                      <Icon name="check" className="h-4 w-4" />
+                      Mark Done
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={busyId === row.id}
+                      onClick={() => withBusy(row.id, reopenRegistration)}
+                      className="btn-ghost btn-sm disabled:opacity-60"
+                    >
+                      Reopen
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    disabled={busyId === row.id}
+                    onClick={() => withBusy(row.id, deleteProgrammeRegistration)}
                     className="btn-ghost btn-sm disabled:opacity-60"
                   >
                     <Icon name="trash" className="h-4 w-4" />
