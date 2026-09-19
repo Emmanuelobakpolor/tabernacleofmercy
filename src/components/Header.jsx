@@ -64,24 +64,24 @@ export default function Header() {
 
       {/* ---------- 2. Main navigation ---------- */}
       <div className="border-b border-line bg-white shadow-[0_1px_3px_rgba(16,24,40,.05)]">
-        <div className="container flex min-h-[78px] items-center justify-between gap-3 py-2.5 sm:gap-6 lg:h-[92px] lg:py-0">
+        <div className="container flex min-h-[78px] items-center justify-between gap-3 py-2.5 sm:gap-6 lg:min-h-[92px] lg:py-0">
           {/* Brand lockup */}
-          <Link to="/" className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+          <Link to="/" className="flex shrink-0 items-center gap-2.5 sm:gap-3">
             <span className="grid h-10 w-10 shrink-0 place-items-center bg-brand text-white sm:h-12 sm:w-12 lg:h-[54px] lg:w-[54px]">
               <Icon name="cross" className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={2} />
             </span>
-            <span className="min-w-0 leading-tight">
-              <span className="block font-heading text-[15px] font-bold leading-snug tracking-tight text-ink sm:text-[19px] sm:leading-tight lg:text-[22px]">
+            <span className="leading-tight">
+              <span className="block whitespace-nowrap font-heading text-[15px] font-bold leading-snug tracking-tight text-ink sm:text-[19px] sm:leading-tight lg:text-[22px]">
                 Tabernacle Of Mercy Parish
               </span>
-              <span className="mt-0.5 hidden font-heading text-[10.5px] font-medium uppercase tracking-[0.17em] text-brand sm:block lg:text-[11px]">
+              <span className="mt-0.5 hidden whitespace-nowrap font-heading text-[10.5px] font-medium uppercase tracking-[0.17em] text-brand sm:block lg:text-[11px]">
                 Redeemed Christian Church of God
               </span>
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-1 xl:flex">
+          <nav className="hidden items-center gap-1 nav:flex">
             {navLinks.map((l) => (
               <NavLink
                 key={l.to}
@@ -103,7 +103,7 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link to="/prayer-request" className="btn-ghost btn-sm hidden whitespace-nowrap xl:inline-flex">
+            <Link to="/prayer-request" className="btn-ghost btn-sm hidden whitespace-nowrap nav:inline-flex">
               Prayer Request
             </Link>
             <Link to="/give" className="btn-primary btn-sm hidden whitespace-nowrap sm:inline-flex">
@@ -116,7 +116,7 @@ export default function Header() {
               onClick={() => setOpen((v) => !v)}
               aria-label="Toggle menu"
               aria-expanded={open}
-              className="grid h-11 w-11 place-items-center border border-line text-ink transition-colors hover:border-brand hover:text-brand xl:hidden"
+              className="grid h-11 w-11 place-items-center border border-line text-ink transition-colors hover:border-brand hover:text-brand nav:hidden"
             >
               <Icon
                 name={open ? 'close' : 'menu'}
@@ -130,7 +130,7 @@ export default function Header() {
       {/* ---------- Mobile drawer ---------- */}
       <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 top-0 z-40 xl:hidden">
+          <div className="fixed inset-0 top-0 z-40 nav:hidden">
             <motion.div
               variants={backdropVariants}
               initial="initial"

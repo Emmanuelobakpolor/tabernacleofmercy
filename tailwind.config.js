@@ -8,6 +8,13 @@ export default {
       screens: { '2xl': '1200px' },
     },
     extend: {
+      screens: {
+        // Wide enough for the full desktop nav (links + Prayer Request +
+        // Give Online) to fit beside the brand lockup without wrapping —
+        // the default xl (1280px) is too tight once the container's own
+        // 1200px cap and side padding are accounted for.
+        nav: '1400px',
+      },
       colors: {
         brand: {
           DEFAULT: '#114899',
