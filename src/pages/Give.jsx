@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Icon from '../components/Icons'
 import { PageBanner, Reveal, SectionHeading } from '../components/Common'
-import { bankDetails, church, givingCategories } from '../data/site'
+import { accounts } from '../data/site'
 
 export default function Give() {
   return (

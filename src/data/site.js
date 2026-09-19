@@ -330,12 +330,26 @@ export const givingCategories = [
   },
 ]
 
-export const bankDetails = {
-  bankName: 'First Bank of Nigeria',
-  accountName: 'Tabernacle Of Mercy Parish',
-  accountNumber: '3012345678',
-  sortCode: '011-152-003',
-}
+export const accounts = [
+  {
+    name: 'Main',
+    accountName: 'RCCG TABERNACLE OF MERCY',
+    accountNumber: '0152758658',
+    sortCode: '011-152-003',
+  },
+  {
+    name: 'Building',
+    accountName: 'RCCG TABERNACLE OF MERCY BUILDING ACCOUNT',
+    accountNumber: '0159059464',
+    sortCode: '011-152-003',
+  },
+  {
+    name: 'Welfare',
+    accountName: 'RCCG TABERNACLE OF MERCY WELFARE ACCOUNT',
+    accountNumber: '0159059505',
+    sortCode: '011-152-003',
+  },
+];
 
 export const quickLinks = [
   { label: 'About Us', to: '/about' },
