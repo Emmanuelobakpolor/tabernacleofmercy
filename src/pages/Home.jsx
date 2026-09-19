@@ -32,7 +32,7 @@ function Hero() {
     <section className="relative isolate overflow-hidden">
       <img
         src={HERO_IMAGE}
-        alt="The congregation gathered in worship at Tarbernacle Of Mercy Parish"
+        alt="The congregation gathered in worship at Tabernacle Of Mercy Parish"
         className="absolute inset-0 h-full w-full object-cover"
         fetchpriority="high"
       />
@@ -53,7 +53,7 @@ function Hero() {
             <h1 className="mt-6 font-heading text-[38px] font-bold leading-[1.1] text-white [text-shadow:0_2px_14px_rgba(0,0,0,.4)] sm:text-[54px] lg:text-[64px]">
               Welcome to
               <br />
-              Tarbernacle Of Mercy Parish
+              Tabernacle Of Mercy Parish
             </h1>
           </Reveal>
 
@@ -134,7 +134,7 @@ function WelcomeSection() {
 
           <div className="mt-7 space-y-5 text-[16.5px] leading-[1.85] text-muted">
             <p>
-              On behalf of the entire family of Tarbernacle Of Mercy Parish, it is my joy to welcome
+              On behalf of the entire family of Tabernacle Of Mercy Parish, it is my joy to welcome
               you. Whether you are searching for a church home, visiting our city, or simply
               curious about the Christian faith, you will find a warm seat and an open heart
               waiting for you here.

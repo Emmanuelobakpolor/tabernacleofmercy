@@ -42,7 +42,7 @@ function EventListings({ events }) {
           <SectionHeading
             eyebrow="Mark Your Calendar"
             title="Upcoming Programmes"
-            lede="Scroll through what is coming up at Tarbernacle Of Mercy Parish and register for the programmes you would like to attend."
+            lede="Scroll through what is coming up at Tabernacle Of Mercy Parish and register for the programmes you would like to attend."
           />
         </Reveal>
 

@@ -1,6 +1,6 @@
-# Tarbernacle Of Mercy Parish — Church Website
+# Tabernacle Of Mercy Parish — Church Website
 
-A professional church website for The Redeemed Christian Church of God, Tarbernacle Of Mercy Parish,
+A professional church website for The Redeemed Christian Church of God, Tabernacle Of Mercy Parish,
 built in the style of a premium WordPress/ThemeForest church theme.
 
 ## Running the site

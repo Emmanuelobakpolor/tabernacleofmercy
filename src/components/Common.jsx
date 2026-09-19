@@ -128,7 +128,7 @@ export function WhatsAppButton() {
   return (
     <a
       href={`https://wa.me/${church.whatsapp}?text=${encodeURIComponent(
-        'Hello Tarbernacle Of Mercy Parish, I would like to make an enquiry.'
+        'Hello Tabernacle Of Mercy Parish, I would like to make an enquiry.'
       )}`}
       target="_blank"
       rel="noreferrer"

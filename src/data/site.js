@@ -10,14 +10,14 @@
 import eventsData from './events.json'
 
 export const church = {
-  name: 'Tarbernacle Of Mercy Parish',
-  fullName: 'The Redeemed Christian Church of God, Tarbernacle Of Mercy Parish',
+  name: 'Tabernacle Of Mercy Parish',
+  fullName: 'The Redeemed Christian Church of God, Tabernacle Of Mercy Parish',
   tagline: 'A Place of Worship, Fellowship and Transformation',
   address: 'Rufia Elemoro Street, Ibejulekki, Lagos State, Nigeria',
   phone: '+234 803 000 0000',
   phoneHref: '+2348030000000',
   whatsapp: '2348030000000',
-  email: 'tarbernacleofmercy@gmail.com',
+  email: 'Tabernacleofmercy@gmail.com',
   mapEmbed: 'https://www.google.com/maps?q=King of Elemoro Palace,+Lagos,+Nigeria&output=embed',
   socials: [
     { name: 'Facebook', href: 'https://facebook.com', icon: 'facebook' },
@@ -225,7 +225,7 @@ export const leadership = [
   {
     name: 'Pastor Alfred Lawrence',
     role: 'Parish Pastor',
-    bio: 'Pastor Lawrence has served in pastoral ministry for over eighteen years and has led Tarbernacle Of Mercy Parish since 2015. He is known for clear, practical teaching of the Word.',
+    bio: 'Pastor Lawrence has served in pastoral ministry for over eighteen years and has led Tabernacle Of Mercy Parish since 2015. He is known for clear, practical teaching of the Word.',
     image:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
   },
@@ -332,7 +332,7 @@ export const givingCategories = [
 
 export const bankDetails = {
   bankName: 'First Bank of Nigeria',
-  accountName: 'Tarbernacle Of Mercy Parish',
+  accountName: 'Tabernacle Of Mercy Parish',
   accountNumber: '3012345678',
   sortCode: '011-152-003',
 }

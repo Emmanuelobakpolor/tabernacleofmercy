@@ -14,7 +14,7 @@ export default function Footer() {
             </span>
             <span className="leading-tight">
               <span className="block font-heading text-[19px] font-bold text-white">
-                Tarbernacle Of Mercy Parish
+                Tabernacle Of Mercy Parish
               </span>
               <span className="block font-heading text-[10.5px] font-medium uppercase tracking-[0.17em] text-white/55">
                 Redeemed Christian Church of God
@@ -25,7 +25,7 @@ export default function Footer() {
           <p className="mt-6 max-w-sm text-[15px] leading-[1.85]">
             A family of believers committed to the worship of God, the teaching of His Word
             and the care of one another. Whoever you are, wherever you are on your journey,
-            there is a place for you at Tarbernacle Of Mercy Parish.
+            there is a place for you at Tabernacle Of Mercy Parish.
           </p>
 
           <div className="mt-7 flex gap-2.5">
@@ -106,7 +106,7 @@ export default function Footer() {
 
           <div className="mt-6 overflow-hidden border border-white/15">
             <iframe
-              title="Map to Tarbernacle Of Mercy Parish"
+              title="Map to Tabernacle Of Mercy Parish"
               src={church.mapEmbed}
               width="100%"
               height="150"

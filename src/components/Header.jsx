@@ -72,7 +72,7 @@ export default function Header() {
             </span>
             <span className="min-w-0 leading-tight">
               <span className="block font-heading text-[15px] font-bold leading-snug tracking-tight text-ink sm:text-[19px] sm:leading-tight lg:text-[22px]">
-                Tarbernacle Of Mercy Parish
+                Tabernacle Of Mercy Parish
               </span>
               <span className="mt-0.5 hidden font-heading text-[10.5px] font-medium uppercase tracking-[0.17em] text-brand sm:block lg:text-[11px]">
                 Redeemed Christian Church of God

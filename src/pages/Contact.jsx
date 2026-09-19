@@ -165,7 +165,7 @@ function FormAndMap() {
             <div className="mt-10 border-t-4 border-brand bg-white p-7 shadow-card sm:p-9">
               {sent ? (
                 <SuccessNotice title="Message sent">
-                  Thank you for reaching out to Tarbernacle Of Mercy Parish. A member of our
+                  Thank you for reaching out to Tabernacle Of Mercy Parish. A member of our
                   team will be in touch with you shortly.
                 </SuccessNotice>
               ) : (
@@ -258,7 +258,7 @@ function FormAndMap() {
           <Reveal delay={150}>
             <div className="overflow-hidden border border-line bg-white shadow-card">
               <iframe
-                title="Map showing the location of Tarbernacle Of Mercy Parish"
+                title="Map showing the location of Tabernacle Of Mercy Parish"
                 src={church.mapEmbed}
                 width="100%"
                 height="420"

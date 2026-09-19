@@ -11,7 +11,7 @@ export default function Sermons() {
     <>
       <PageBanner
         title="Sermons & Messages"
-        subtitle="The Word preached at Tarbernacle Of Mercy Parish, recorded and archived so you can listen again at any time."
+        subtitle="The Word preached at Tabernacle Of Mercy Parish, recorded and archived so you can listen again at any time."
         crumb="Sermons"
         image="https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=2000&q=80"
       />

@@ -45,7 +45,7 @@ function History() {
         </Reveal>
 
         <Reveal delay={120}>
-          <SectionHeading align="left" eyebrow="Our Story" title="The History of Tarbernacle Of Mercy Parish" />
+          <SectionHeading align="left" eyebrow="Our Story" title="The History of Tabernacle Of Mercy Parish" />
 
           <div className="mt-7 space-y-5 text-[16.5px] leading-[1.85] text-muted">
             <p>
