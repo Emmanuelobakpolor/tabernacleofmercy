@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Icon from '../components/Icons'
 import { PageBanner, Reveal, SectionHeading } from '../components/Common'
-import { accounts } from '../data/site'
+import { accounts, church, givingCategories } from '../data/site'
 
 export default function Give() {
   return (
@@ -60,78 +60,107 @@ function Categories() {
 
 /* ---------------- Bank transfer details ---------------- */
 function BankTransfer() {
-  const [copied, setCopied] = useState(false)
+  const [copiedAccount, setCopiedAccount] = useState(null)
 
-  const copy = async () => {
+  const copy = async (account) => {
     try {
-      await navigator.clipboard.writeText(bankDetails.accountNumber)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2200)
+      await navigator.clipboard.writeText(account.accountNumber)
+      setCopiedAccount(account.accountNumber)
+      setTimeout(() => setCopiedAccount(null), 2200)
     } catch {
       /* clipboard unavailable — the number is visible on screen anyway */
     }
   }
 
-  const rows = [
-    ['Bank Name', bankDetails.bankName],
-    ['Account Name', bankDetails.accountName],
-    ['Account Number', bankDetails.accountNumber],
-    ['Sort Code', bankDetails.sortCode],
-  ]
-
   return (
-    <section id="bank-transfer" className="scroll-mt-24 py-20 lg:py-28">
+    <section id="bank-transfer" className="scroll-mt-24 bg-sand py-20 lg:py-28">
       <div className="container">
-        <div className="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <Reveal>
-            <SectionHeading
-              align="left"
-              eyebrow="Direct Transfer"
-              title="Bank Transfer Details"
-              lede="Prefer to transfer straight from your bank? Use the parish account details below and quote your giving category as the narration."
-            />
+        <Reveal>
+          <SectionHeading
+            align="center"
+            eyebrow="Direct Transfer"
+            title="Bank Transfer Details"
+            lede="Prefer to transfer straight from your bank? Use any of the parish accounts below and quote your giving category as the narration."
+          />
+        </Reveal>
 
-            <p className="mt-7 flex gap-3 border-l-4 border-brand bg-brand-tint p-5 text-[14.5px] leading-relaxed text-muted">
-              <Icon name="mail" className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-              <span>
-                After transferring, kindly send your teller or screenshot to{' '}
-                <a
-                  href={`mailto:${church.email}`}
-                  className="font-semibold text-brand hover:underline"
-                >
-                  {church.email}
-                </a>{' '}
-                so we can issue your receipt.
-              </span>
-            </p>
-          </Reveal>
+        <div className="mt-12 grid gap-6 lg:grid-cols-3 lg:items-stretch">
+          {accounts.map((account, index) => (
+            <Reveal key={account.name} delay={index * 90}>
+              <div
+                className={[
+                  'group flex h-full flex-col overflow-hidden bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lift',
+                  account.name === 'Main' ? 'border-t-4 border-brand' : 'border-t-4 border-brand/70',
+                ].join(' ')}
+              >
+                <div className="mb-5 flex items-center justify-between gap-3">
+                  <span className="inline-flex items-center rounded-full bg-brand-tint px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-brand">
+                    {account.name}
+                  </span>
+                  {account.name === 'Main' && (
+                    <span className="rounded-full border border-line px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">
+                      Primary
+                    </span>
+                  )}
+                </div>
 
-          <Reveal delay={120}>
-            <div className="border-t-4 border-brand bg-white shadow-card">
-              <dl className="divide-y divide-line">
-                {rows.map(([label, value]) => (
-                  <div
-                    key={label}
-                    className="flex items-center justify-between gap-4 px-7 py-5"
-                  >
-                    <dt className="font-heading text-[14px] font-medium text-muted">
-                      {label}
-                    </dt>
-                    <dd className="text-right font-heading text-[16px] font-semibold text-ink">
-                      {value}
-                    </dd>
+                <h3 className="min-h-[72px] font-heading text-[20px] font-semibold leading-snug text-ink">
+                  {account.accountName}
+                </h3>
+
+                <div className="mt-6 flex flex-1 flex-col justify-between gap-5">
+                  <div className="rounded-xl bg-sand px-4 py-4">
+                    <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-muted">
+                      Account Number
+                    </p>
+                    <p className="mt-2 font-heading text-[22px] font-bold leading-none text-ink">
+                      {account.accountNumber}
+                    </p>
                   </div>
-                ))}
-              </dl>
 
-              <div className="border-t border-line p-7">
-                <button type="button" onClick={copy} className="btn-ghost btn-sm w-full">
-                  <Icon name={copied ? 'check' : 'download'} className="h-[17px] w-[17px]" />
-                  {copied ? 'Account Number Copied' : 'Copy Account Number'}
+                  <div className="space-y-4 border-t border-line pt-4">
+                    <div>
+                      <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-muted">
+                        Bank
+                      </p>
+                      <p className="mt-2 font-heading text-[16px] font-semibold text-ink">
+                        First Bank of Nigeria
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-muted">
+                        Sort Code
+                      </p>
+                      <p className="mt-2 font-heading text-[16px] font-semibold text-ink">
+                        {account.sortCode}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => copy(account)}
+                  className="mt-7 btn-ghost btn-sm w-full"
+                >
+                  <Icon
+                    name={copiedAccount === account.accountNumber ? 'check' : 'download'}
+                    className="h-[17px] w-[17px]"
+                  />
+                  {copiedAccount === account.accountNumber ? 'Copied' : 'Copy Number'}
                 </button>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="mt-10 rounded-2xl border border-brand/20 bg-brand-tint p-5 text-center text-[15px] leading-relaxed text-muted">
+          After transferring, kindly send your teller or screenshot to{' '}
+          <a href={`mailto:${church.email}`} className="font-semibold text-brand hover:underline">
+            {church.email}
+          </a>{' '}
+          so we can issue your receipt.
         </div>
       </div>
     </section>
