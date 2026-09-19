@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /testimonies/{id} {
+      allow create: if request.resource.data.status == 'pending'
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() < 80
+                    && request.resource.data.quote is string
+                    && request.resource.data.quote.size() > 0
+                    && request.resource.data.quote.size() < 1000
+                    && request.resource.data.role is string
+                    && request.resource.data.role.size() < 80;
+
+      allow read: if resource.data.status == 'approved' || request.auth != null;
+      allow update, delete: if request.auth != null;
+    }
+
+    match /events/{id} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+    }
+
+    match /sermons/{id} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+    }
+
+    match /prayerRequests/{id} {
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() < 80
+                    && request.resource.data.message is string
+                    && request.resource.data.message.size() > 0
+                    && request.resource.data.message.size() < 2000;
+
+      allow read, update, delete: if request.auth != null;
+    }
+
+    match /contactMessages/{id} {
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() < 80
+                    && request.resource.data.message is string
+                    && request.resource.data.message.size() > 0
+                    && request.resource.data.message.size() < 2000;
+
+      allow read, update, delete: if request.auth != null;
+    }
+
+    match /programmeRegistrations/{id} {
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() < 80
+                    && request.resource.data.eventSlug is string
+                    && request.resource.data.eventSlug.size() > 0;
+
+      allow read, update, delete: if request.auth != null;
+    }
+  }
+}
