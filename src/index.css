@@ -65,6 +65,20 @@
     @apply inline-flex items-center gap-2 font-heading font-semibold text-brand
            hover:text-brand-deep transition-colors;
   }
+
+  /* ---- Mobile slider: horizontal scroll-snap that becomes a grid at sm+ ---- */
+  .slider {
+    @apply -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-5 pb-2
+           sm:mx-0 sm:grid sm:snap-none sm:overflow-visible sm:px-0 sm:pb-0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .slider::-webkit-scrollbar {
+    display: none;
+  }
+  .slider > * {
+    @apply w-[78%] shrink-0 snap-center sm:w-auto sm:shrink;
+  }
 }
 
 /* Simple, tasteful entrance — no futuristic motion */

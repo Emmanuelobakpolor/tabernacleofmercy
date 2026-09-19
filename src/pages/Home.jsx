@@ -410,7 +410,7 @@ function Testimonies() {
         </Reveal>
 
         {display.length ? (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="slider mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {display.map((t, i) => (
               <Reveal key={t.id || t.name} delay={(i % 3) * 100}>
                 <article className="flex h-full flex-col border-t-4 border-brand bg-white p-7 shadow-card transition-shadow hover:shadow-lift">

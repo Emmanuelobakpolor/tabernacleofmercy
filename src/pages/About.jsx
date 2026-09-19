@@ -177,7 +177,7 @@ function Leadership() {
           />
         </Reveal>
 
-        <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="slider mt-14 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
           {leadership.map((p, i) => (
             <Reveal key={p.name} delay={(i % 3) * 110}>
               <article className="card group h-full text-center">
