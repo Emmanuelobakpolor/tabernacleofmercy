@@ -124,7 +124,7 @@ function BankTransfer() {
                         Bank
                       </p>
                       <p className="mt-2 font-heading text-[16px] font-semibold text-ink">
-                        First Bank of Nigeria
+                        GT Bank
                       </p>
                     </div>
 
