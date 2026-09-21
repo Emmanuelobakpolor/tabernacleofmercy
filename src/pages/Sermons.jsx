@@ -4,7 +4,6 @@ import Icon from '../components/Icons'
 import { PageBanner, Reveal, SectionHeading } from '../components/Common'
 import { fadeVariants } from '../lib/motion'
 import { subscribeSermons } from '../lib/sermons'
-import { sermons as seedSermons } from '../data/site'
 
 export default function Sermons() {
   return (
@@ -28,9 +27,8 @@ function SermonLibrary() {
 
   useEffect(() => subscribeSermons(setLive), [])
 
-  // Live, admin-managed sermons take priority; fall back to seed content so
-  // the page is never empty before the admin has added anything.
-  const sermons = live && live.length ? live : seedSermons
+  // Use only admin-managed sermons from Firebase
+  const sermons = live || []
 
   const seriesList = useMemo(
     () => ['All', ...Array.from(new Set(sermons.map((s) => s.series)))],
